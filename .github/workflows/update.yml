@@ -160,6 +160,7 @@ jobs:
           ssh-keyscan -p "$PORT" -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
           rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key -p $PORT" \
             site/ "$USER@$HOST:$TARGET/"
+          echo "已推送到 $USER@$HOST:$TARGET"
 
   deploy-pages:
     needs: update
@@ -179,4 +180,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-          echo "已推送到 $USER@$HOST:$TARGET"
