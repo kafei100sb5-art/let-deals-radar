@@ -60,6 +60,10 @@ DEFAULTS: dict[str, object] = {
     "racknerd.com": "https://my.racknerd.com/aff.php?aff=21979",
     # CloudCone：ref 参数作用于原站
     "cloudcone.com": {"param": "ref", "value": "14842"},
+    # EthernetServers：WHMCS 独立推广入口
+    "ethernetservers.com": "https://www.ethernetservers.com/aff.php?aff=3361",
+    # SmokyHosts：WHMCS 独立推广入口
+    "smokyhosts.com": "https://members.smokyhosts.com/aff.php?aff=75",
 }
 
 
