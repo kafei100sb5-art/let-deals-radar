@@ -57,13 +57,9 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 #     从而保留「具体套餐页」这一层，转化率更高。
 DEFAULTS: dict[str, object] = {
     # RackNerd：推广入口在独立子域 my.racknerd.com，只能整体替换
-    "racknerd.com": "https://my.racknerd.com/aff.php?aff=21559",
+    "racknerd.com": "https://my.racknerd.com/aff.php?aff=21979",
     # CloudCone：ref 参数作用于原站
-    "cloudcone.com": {"param": "ref", "value": "14691"},
-    # GreenCloud：billing 路径下的 aff 参数
-    "greencloudvps.com": {"param": "aff", "value": "10361"},
-    # DeluxHost：ref 参数作用于原站
-    "deluxhost.net": {"param": "ref", "value": "M7U4WHX5"},
+    "cloudcone.com": {"param": "ref", "value": "14842"},
 }
 
 
