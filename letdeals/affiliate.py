@@ -64,6 +64,8 @@ DEFAULTS: dict[str, object] = {
     "ethernetservers.com": "https://www.ethernetservers.com/aff.php?aff=3361",
     # SmokyHosts：WHMCS 独立推广入口
     "smokyhosts.com": "https://members.smokyhosts.com/aff.php?aff=75",
+    # DeluxHost：ref 参数作用于原站
+    "deluxhost.net": {"param": "ref", "value": "LYDWQ9LE"},
 }
 
 
