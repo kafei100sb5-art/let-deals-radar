@@ -1,15 +1,14 @@
 <div align="center">
 
-# letdeals — VPS 优惠聚合雷达
+# Share600 VPS 促销雷达
 
 自动抓取 **LowEndTalk Offers** 与 **LowEndBox** 的 VPS 优惠，抽取规格、价格、
 折扣力度与**库存状态**，生成可部署的静态站。
 
 **零运行时依赖**（仅 Python 标准库）· 产物是纯静态文件
 
-[![在线体验](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E4%BD%93%E9%AA%8C-vps.lowseek.ai-2563eb?style=for-the-badge)](https://vps.lowseek.ai)
-[![论坛](https://img.shields.io/badge/%E8%AE%BA%E5%9D%9B-lowseek.ai-16a34a?style=for-the-badge)](https://lowseek.ai/)
-[![TG 群](https://img.shields.io/badge/TG%20%E7%BE%A4-LowSeekChat-0ea5e9?style=for-the-badge&logo=telegram)](https://t.me/LowSeekChat)
+[![在线站点](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E7%AB%99%E7%82%B9-share600.de5.net-0f766e?style=for-the-badge)](https://share600.de5.net)
+[![资源主站](https://img.shields.io/badge/%E8%B5%84%E6%BA%90%E4%B8%BB%E7%AB%99-100xx.xx.kg-2563eb?style=for-the-badge)](https://100xx.xx.kg/)
 [![协议](https://img.shields.io/badge/%E5%8D%8F%E8%AE%AE-MIT-yellow?style=for-the-badge)](LICENSE)
 
 </div>
@@ -20,10 +19,9 @@
 
 | 用途 | 地址 |
 |---|---|
-| **在线站点** | https://vps.lowseek.ai |
-| **论坛** | https://lowseek.ai/ |
-| **TG 群** | https://t.me/LowSeekChat |
-| **TG 频道** | https://t.me/LowSeekNews |
+| **在线站点** | https://share600.de5.net |
+| **隐私政策** | https://share600.de5.net/privacy.html |
+| **开源工具与资源站** | https://100xx.xx.kg/ |
 
 ---
 
