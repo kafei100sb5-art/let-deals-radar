@@ -59,6 +59,8 @@ jobs:
           LDR_SITE_DESC: ${{ vars.LDR_SITE_DESC }}
           LDR_SITE_FOOTER: ${{ vars.LDR_SITE_FOOTER }}
           LDR_AFFILIATES: ${{ vars.LDR_AFFILIATES }}
+          LDR_ADSENSE_ID: ${{ vars.LDR_ADSENSE_ID }}
+          LDR_GSC_VERIFY: ${{ vars.LDR_GSC_VERIFY }}
           # 抓取参数：手动触发时用输入值，定时触发时用默认值
           WITH_REPLIES: ${{ github.event.inputs.with_replies || '1' }}
           RECENT_DAYS: ${{ github.event.inputs.recent_days || '90' }}

@@ -174,6 +174,7 @@ SITE_TEMPLATE = r"""<!DOCTYPE html>
 <title>@@TITLE@@</title>
 <meta name="description" content="@@DESC@@">
 @@CANONICAL@@
+@@EXTRA_HEAD@@
 <!-- 站点图标：沿用论坛的 LS 品牌图标，保持视觉一致。
      ico 供浏览器标签页（多尺寸），PNG 供 Android/PWA 与 iOS 主屏。 -->
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -672,10 +673,24 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     if config.SITE_URL:
         canonical = f'<link rel="canonical" href="{config.SITE_URL}/">'
 
+    extra_head_parts = []
+    gsc_verify = getattr(config, "GSC_VERIFY", "").strip()
+    if gsc_verify:
+        extra_head_parts.append(
+            f'<meta name="google-site-verification" content="{html.escape(gsc_verify, quote=True)}">'
+        )
+    adsense_id = getattr(config, "ADSENSE_ID", "").strip()
+    if adsense_id:
+        extra_head_parts.append(
+            f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={html.escape(adsense_id, quote=True)}" crossorigin="anonymous"></script>'
+        )
+    extra_head = "\n".join(extra_head_parts)
+
     html_out = (SITE_TEMPLATE
                 .replace("@@TITLE@@", html.escape(config.SITE_TITLE))
                 .replace("@@DESC@@", html.escape(config.SITE_DESC, quote=True))
                 .replace("@@CANONICAL@@", canonical)
+                .replace("@@EXTRA_HEAD@@", extra_head)
                 .replace("@@DATA@@", _json_for_script(payload))
                 .replace("@@COUNT@@", str(payload.get("count", 0)))
                 .replace("@@GENERATED@@", generated)
@@ -694,6 +709,18 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     # 部署辅助文件
     with open(os.path.join(out_dir, ".nojekyll"), "w", encoding="utf-8") as f:
         f.write("")
+
+    if config.SITE_URL:
+        from urllib.parse import urlsplit
+        host = (urlsplit(config.SITE_URL).hostname or "").strip()
+        if host and not host.endswith(".github.io"):
+            with open(os.path.join(out_dir, "CNAME"), "w", encoding="utf-8") as f:
+                f.write(host + "\n")
+
+    if adsense_id:
+        pub_id = adsense_id.removeprefix("ca-")
+        with open(os.path.join(out_dir, "ads.txt"), "w", encoding="utf-8") as f:
+            f.write(f"google.com, {pub_id}, DIRECT, f08c47fec0942fa0\n")
 
     robots = ["User-agent: *", "Allow: /"]
     if config.SITE_URL:
