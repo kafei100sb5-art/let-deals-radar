@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vps.share600.de5.net/sitemap.xml
+Sitemap: https://share600.de5.net/sitemap.xml

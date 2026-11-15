@@ -60,7 +60,7 @@ SITE_DESC = _env(
     "标注折扣力度、循环折扣与库存状态。",
 )
 # 例：https://deals.example.com  （末尾不要带 /）
-SITE_URL = _env("LDR_SITE_URL", "https://vps.share600.de5.net").rstrip("/")
+SITE_URL = _env("LDR_SITE_URL", "https://share600.de5.net").rstrip("/")
 SITE_FOOTER = _env("LDR_SITE_FOOTER", "")
 ADSENSE_ID = _env("LDR_ADSENSE_ID", "")
 GSC_VERIFY = _env("LDR_GSC_VERIFY", "")
