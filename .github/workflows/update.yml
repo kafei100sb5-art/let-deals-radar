@@ -55,7 +55,7 @@ jobs:
         env:
           # 站点与域名配置（在仓库 Settings → Variables 中设置）
           LDR_SITE_TITLE: ${{ vars.LDR_SITE_TITLE }}
-          LDR_SITE_URL: ${{ vars.LDR_SITE_URL }}
+          LDR_SITE_URL: ${{ vars.LDR_SITE_URL || 'https://share600.de5.net' }}
           LDR_SITE_DESC: ${{ vars.LDR_SITE_DESC }}
           LDR_SITE_FOOTER: ${{ vars.LDR_SITE_FOOTER }}
           LDR_AFFILIATES: ${{ vars.LDR_AFFILIATES }}
