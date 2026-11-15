@@ -66,6 +66,10 @@ DEFAULTS: dict[str, object] = {
     "smokyhosts.com": "https://members.smokyhosts.com/aff.php?aff=75",
     # DeluxHost：ref 参数作用于原站
     "deluxhost.net": {"param": "ref", "value": "LYDWQ9LE"},
+    # Infrawire：aff 参数作用于原站
+    "infrawire.net": {"param": "aff", "value": "105"},
+    # EnderHost：WHMCS 独立推广入口
+    "enderhost.co": "https://billing.enderhost.co/aff.php?aff=38",
 }
 
 
