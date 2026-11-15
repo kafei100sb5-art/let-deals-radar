@@ -181,17 +181,17 @@ SITE_TEMPLATE = r"""<!DOCTYPE html>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#75ADFB">
+<meta name="theme-color" content="#0f766e">
 <style>
 :root{
-  --bg:#f6f7f9; --card:#fff; --ink:#16181d; --muted:#6b7280; --line:#e5e7eb;
-  --accent:#2563eb; --accent-soft:#eff6ff; --good:#059669; --warn:#d97706;
+  --bg:#f6f8f8; --card:#fff; --ink:#16181d; --muted:#6b7280; --line:#e5e7eb;
+  --accent:#0f766e; --accent-soft:#f0fdfa; --good:#059669; --warn:#d97706;
   --bad:#dc2626; --chip:#f3f4f6;
 }
 @media (prefers-color-scheme:dark){
-  :root{ --bg:#0f1115; --card:#171a21; --ink:#e8eaed; --muted:#9aa0a6;
-         --line:#272b34; --accent:#60a5fa; --accent-soft:#1e293b;
-         --good:#34d399; --warn:#fbbf24; --bad:#f87171; --chip:#1f232b; }
+  :root{ --bg:#0f1214; --card:#171c1f; --ink:#e8eaed; --muted:#9aa0a6;
+         --line:#272d33; --accent:#2dd4bf; --accent-soft:#134e4a;
+         --good:#34d399; --warn:#fbbf24; --bad:#f87171; --chip:#1f2529; }
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
@@ -298,6 +298,10 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
 .note{background:var(--chip);border-left:3px solid var(--warn);
   border-radius:0 8px 8px 0;padding:10px 14px;font-size:12.5px;
   color:var(--muted);margin-top:14px}
+.guide h2{margin:0 0 12px;font-size:16px}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.guide-item{background:var(--chip);border-radius:8px;padding:12px 14px;font-size:12.5px;line-height:1.7}
+.guide-item b{display:block;color:var(--ink);margin-bottom:4px;font-size:13px}
 @media(max-width:760px){
   .hidesm{display:none}
   input[type=search]{min-width:100%}
@@ -374,10 +378,28 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
   <div class="empty" id="empty" style="display:none">没有匹配的条目</div>
 </div>
 
+<section class="card guide" aria-label="VPS 选购与线路速查">
+  <h2>VPS 选购与线路速查</h2>
+  <div class="guide-grid">
+    <div class="guide-item">
+      <b>1. 常见网络线路参考</b>
+      CN2 GIA / AS9929 / CMI 属于高优先级回国优化线路，晚高峰丢包率较低；普通 BGP 或直连线路适合建站、中转及海外业务，下单前建议先测试商家提供的 Looking Glass 或测试 IP。
+    </div>
+    <div class="guide-item">
+      <b>2. 循环折扣 vs 首年特价</b>
+      标注「循环」的优惠码在后续续费时保持同等折扣；未标注循环的促销通常仅限首期账单有效，长期使用请以厂商结算页显示的续费原价为准。
+    </div>
+    <div class="guide-item">
+      <b>3. 虚拟化与退款提醒</b>
+      KVM 支持独立内核与完整容器运行环境，适合 Docker 与常规服务；LXC / OpenVZ 共享宿主机内核，部分内核模块受限。特价年付或清仓机型通常不支持无理由退款，请按需购买。
+    </div>
+  </div>
+</section>
+
 <footer>
   <div>本站汇总公开渠道的优惠信息，仅作信息聚合，<b>不构成购买建议</b>。</div>
   <div>@@FXNOTE@@</div>
-  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。</div>
+  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。 · <a href="privacy.html">隐私政策</a></div>
   @@FOOTER@@
 </footer>
 
@@ -655,6 +677,65 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
 """
 
 
+def _render_privacy_html(extra_head: str = "") -> str:
+    """生成独立隐私政策页面 HTML，满足广告联盟与合规披露要求。"""
+    title = html.escape(config.SITE_TITLE)
+    site_url = html.escape(config.SITE_URL or "/")
+    canonical = (f'<link rel="canonical" href="{site_url}/privacy.html">'
+                 if config.SITE_URL else "")
+    footer_line = (f"<div>{html.escape(config.SITE_FOOTER)}</div>"
+                   if config.SITE_FOOTER else "")
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>隐私政策 - {title}</title>
+<meta name="description" content="{title} 隐私政策、Cookie 与第三方广告说明">
+{canonical}
+{extra_head}
+<style>
+:root{{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}}
+@media(prefers-color-scheme:dark){{:root{{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}}}
+*{{box-sizing:border-box}}
+body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}}
+a{{color:var(--accent);text-decoration:none}}
+a:hover{{text-decoration:underline}}
+.wrap{{max-width:860px;margin:0 auto;padding:28px 18px 64px}}
+.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-top:16px}}
+h1{{margin:0 0 8px;font-size:22px}}
+h2{{margin:20px 0 8px;font-size:16px}}
+p,li{{color:var(--ink);margin:6px 0}}
+.muted{{color:var(--muted);font-size:13px}}
+footer{{margin-top:24px;color:var(--muted);font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p><a href="./">&larr; 返回 {title} 首页</a></p>
+  <article class="card">
+    <h1>隐私政策与声明</h1>
+    <p class="muted">适用站点：{site_url}</p>
+    <h2>1. 信息收集与本地存储</h2>
+    <p>本站为纯静态公开信息聚合站点，不提供用户注册或登录功能，亦不主动收集用户的个人身份信息。</p>
+    <h2>2. Cookie 与第三方广告（Google AdSense）</h2>
+    <ul>
+      <li>本站可能使用 Google AdSense 等第三方广告服务展示广告内容。</li>
+      <li>Google 及其合作伙伴可能使用 Cookie 或类似技术，根据您在本站及其他网站的访问记录投放相关广告。</li>
+      <li>您可访问 Google 广告设置或通过浏览器设置管理及停用个性化广告 Cookie。</li>
+    </ul>
+    <h2>3. 外部链接与返利声明</h2>
+    <p>本站汇总的 VPS 促销信息均来自公开渠道，部分商家链接可能包含推广返利（Affiliate）参数，但不会额外增加您的购买成本。产品配置、价格与库存以商家官网结算页面为准。</p>
+  </article>
+  <footer>
+    {footer_line}
+  </footer>
+</div>
+</body>
+</html>
+"""
+
+
 def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     """把 payload 渲染成静态站，返回输出目录。"""
     out_dir = str(out_dir or config.SITE_DIR)
@@ -706,6 +787,10 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     with open(index_path, "w", encoding="utf-8") as f:
         f.write(html_out)
 
+    privacy_path = os.path.join(out_dir, "privacy.html")
+    with open(privacy_path, "w", encoding="utf-8") as f:
+        f.write(_render_privacy_html(extra_head))
+
     # 部署辅助文件
     with open(os.path.join(out_dir, ".nojekyll"), "w", encoding="utf-8") as f:
         f.write("")
@@ -735,6 +820,7 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                 f'  <url><loc>{loc}</loc><lastmod>{today}</lastmod></url>\n'
+                f'  <url><loc>{loc}privacy.html</loc><lastmod>{today}</lastmod></url>\n'
                 '</urlset>\n')
 
     # 站点图标：从 assets/ 复制到输出目录。

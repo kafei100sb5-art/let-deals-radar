@@ -53,15 +53,18 @@ FEED_CACHE = DATA_DIR / "feed.xml"
 # --------------------------------------------------------------------------
 # 部署到自己域名时，改这几个环境变量即可，无需改代码。
 
-SITE_TITLE = _env("LDR_SITE_TITLE", "VPS 活动雷达")
+SITE_TITLE = _env("LDR_SITE_TITLE", "Share600 VPS 促销雷达")
 SITE_DESC = _env(
     "LDR_SITE_DESC",
-    "自动汇总公开渠道的 VPS 优惠活动，"
-    "标注折扣力度、循环折扣与库存状态。",
+    "实时聚合与筛选高性价比 VPS 促销活动，"
+    "标注循环折扣、常见优化线路与实时库存状态。",
 )
 # 例：https://deals.example.com  （末尾不要带 /）
 SITE_URL = _env("LDR_SITE_URL", "https://share600.de5.net").rstrip("/")
-SITE_FOOTER = _env("LDR_SITE_FOOTER", "")
+SITE_FOOTER = _env(
+    "LDR_SITE_FOOTER",
+    "© 2026 share600.de5.net · 独立 VPS 优惠监测与信息整理",
+)
 ADSENSE_ID = _env("LDR_ADSENSE_ID", "ca-pub-5648933646390936")
 GSC_VERIFY = _env("LDR_GSC_VERIFY", "")
 
@@ -70,8 +73,7 @@ GSC_VERIFY = _env("LDR_GSC_VERIFY", "")
 # 留空则不显示 —— 不影响现有布局。
 HEADER_LINKS_RAW = _env(
     "LDR_HEADER_LINKS",
-    "GitHub|https://github.com/lowseekai/let-deals-radar,"
-    " Telegram 频道|https://t.me/LowSeekNews",
+    "开源工具与资源站|https://100xx.xx.kg/",
 )
 
 
