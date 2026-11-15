@@ -62,7 +62,7 @@ SITE_DESC = _env(
 # 例：https://deals.example.com  （末尾不要带 /）
 SITE_URL = _env("LDR_SITE_URL", "https://share600.de5.net").rstrip("/")
 SITE_FOOTER = _env("LDR_SITE_FOOTER", "")
-ADSENSE_ID = _env("LDR_ADSENSE_ID", "")
+ADSENSE_ID = _env("LDR_ADSENSE_ID", "ca-pub-5648933646390936")
 GSC_VERIFY = _env("LDR_GSC_VERIFY", "")
 
 # 页头的附加链接，格式 "名称|地址"，多项用逗号分隔。
