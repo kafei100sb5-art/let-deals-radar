@@ -70,6 +70,10 @@ DEFAULTS: dict[str, object] = {
     "infrawire.net": {"param": "aff", "value": "105"},
     # EnderHost：WHMCS 独立推广入口
     "enderhost.co": "https://billing.enderhost.co/aff.php?aff=38",
+    # HostDare：WHMCS 独立推广入口
+    "hostdare.com": "https://bill.hostdare.com/aff.php?aff=4836",
+    # Aspire Hosting：WHMCS 独立推广入口
+    "aspirehosting.net": "https://billing.aspirehosting.net/aff.php?aff=86",
 }
 
 
