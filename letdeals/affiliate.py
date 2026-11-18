@@ -78,6 +78,8 @@ DEFAULTS: dict[str, object] = {
     "servitro.com": "https://my.servitro.com/aff.php?aff=245",
     # Streamline Servers：WHMCS 独立推广入口
     "streamline-servers.com": "https://billing.streamline-servers.com/aff.php?aff=1301",
+    # HostSailor：WHMCS 独立推广入口
+    "hostsailor.com": "https://clients.hostsailor.com/aff.php?aff=1533",
 }
 
 
