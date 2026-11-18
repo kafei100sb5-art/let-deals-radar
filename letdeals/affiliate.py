@@ -76,6 +76,8 @@ DEFAULTS: dict[str, object] = {
     "aspirehosting.net": "https://billing.aspirehosting.net/aff.php?aff=86",
     # Servitro：WHMCS 独立推广入口
     "servitro.com": "https://my.servitro.com/aff.php?aff=245",
+    # Streamline Servers：WHMCS 独立推广入口
+    "streamline-servers.com": "https://billing.streamline-servers.com/aff.php?aff=1301",
 }
 
 
