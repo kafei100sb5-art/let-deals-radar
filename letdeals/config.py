@@ -73,7 +73,7 @@ GSC_VERIFY = _env("LDR_GSC_VERIFY", "")
 # 留空则不显示 —— 不影响现有布局。
 HEADER_LINKS_RAW = _env(
     "LDR_HEADER_LINKS",
-    "开源工具与资源站|https://100xx.xx.kg/, 福利资源雷达|https://freebie.share600.de5.net/",
+    "开源工具与资源站|https://100xx.xx.kg/, 福利资源雷达|https://freebie.share600.de5.net/, 接码比价站|https://sms.share600.de5.net/",
 )
 
 
