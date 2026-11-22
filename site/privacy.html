@@ -11,16 +11,22 @@
 :root{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .wrap{max-width:860px;margin:0 auto;padding:28px 18px 64px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-top:16px}
-h1{margin:0 0 8px;font-size:22px}
-h2{margin:20px 0 8px;font-size:16px}
+.subnav{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:14px}
+h1{margin:0 0 8px;font-size:22px;line-height:1.35}
+h2{margin:22px 0 8px;font-size:16px}
+h3{margin:16px 0 6px;font-size:14.5px}
 p,li{color:var(--ink);margin:6px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:rgba(15,118,110,.08)}
+code{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
 .muted{color:var(--muted);font-size:13px}
-footer{margin-top:24px;color:var(--muted);font-size:12px}
+footer{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -34,7 +40,7 @@ footer{margin-top:24px;color:var(--muted);font-size:12px}
   </div>
 </nav>
 <div class="wrap">
-  <p><a href="./">&larr; 返回 Share600 VPS 促销雷达 首页</a></p>
+  <div class="subnav"><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <b>隐私政策</b></div>
   <article class="card">
     <h1>隐私政策与声明</h1>
     <p class="muted">适用站点：https://share600.de5.net</p>
@@ -50,6 +56,7 @@ footer{margin-top:24px;color:var(--muted);font-size:12px}
     <p>本站汇总的 VPS 促销信息均来自公开渠道，部分商家链接可能包含推广返利（Affiliate）参数，但不会额外增加您的购买成本。产品配置、价格与库存以商家官网结算页面为准。</p>
   </article>
   <footer>
+    <div><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <b>隐私政策</b></div>
     <div>© 2026 share600.de5.net · 独立 VPS 优惠监测与信息整理</div>
   </footer>
 </div>

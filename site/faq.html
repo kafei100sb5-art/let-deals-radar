@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VPS 选购常见问答 (FAQ) - Share600 VPS 促销雷达</title>
+<meta name="description" content="解答循环折扣、KVM 与 LXC 区别、流量计费、退款政策与防跑路等常见问题。">
+<link rel="canonical" href="https://share600.de5.net/faq.html">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5648933646390936" crossorigin="anonymous"></script>
+<style>
+:root{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 64px}
+.subnav{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:14px}
+h1{margin:0 0 8px;font-size:22px;line-height:1.35}
+h2{margin:22px 0 8px;font-size:16px}
+h3{margin:16px 0 6px;font-size:14.5px}
+p,li{color:var(--ink);margin:6px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:rgba(15,118,110,.08)}
+code{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.muted{color:var(--muted);font-size:13px}
+footer{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<nav aria-label="Share600 站群导航" style="background:#0f172a;color:#cbd5e1;border-bottom:1px solid #1e293b;font-size:12.5px;">
+  <div style="max-width:1180px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;overflow-x:auto;white-space:nowrap;">
+    <span style="font-weight:600;color:#94a3b8;font-size:12px;flex-shrink:0;">Share600 工具矩阵</span>
+    <a href="https://100xx.xx.kg/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🛠️ 开源资源站</a>
+    <a href="https://share600.de5.net/" style="color:#fff;font-weight:600;text-decoration:none;padding:3px 10px;border-radius:999px;background:#2563eb;">🖥️ VPS 促销雷达</a>
+    <a href="https://freebie.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🎁 福利资源雷达</a>
+    <a href="https://sms.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">📱 SMS 接码比价</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="subnav"><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <b>选购 FAQ</b> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <a href="privacy.html">隐私政策</a></div>
+  <article class="card">
+    <h1>VPS 选购常见问答（FAQ）</h1>
+    <p class="muted">整理新手与站长在选购海外特价 VPS 时最常遇到的 8 个核心问题</p>
+    <h2>Q1：什么是「循环折扣（Recurring）」？和首年特价有什么区别？</h2>
+    <p><b>循环折扣</b>指你在首期付款时享受的优惠价格，在后续按月或按年续费时依然保持不变（只要不主动取消服务）。而<b>非循环优惠（One-time）</b>仅限第一张账单打折，第二年续费将恢复原价。长期建站或跑稳定业务时，应优先筛选标注「循环」的套餐。</p>
+    <h2>Q2：KVM、LXC 与 OpenVZ 虚拟化该怎么选？</h2>
+    <ul>
+      <li><b>KVM</b>：完全硬件虚拟化，拥有独立内核，支持自定义操作系统、开启 BBR 拥塞控制以及流畅运行 Docker 容器，是生产环境的首选。</li>
+      <li><b>LXC / OpenVZ</b>：操作系统级虚拟化，与宿主机共享内核。虽然价格往往更低，但通常无法加载部分内核模块，且容易受同宿主机邻居资源争抢影响，更适合轻量学习或临时测试。</li>
+    </ul>
+    <h2>Q3：单向流量和双向流量怎么计算？</h2>
+    <p>大部分北美与欧洲廉价 VPS 采用<b>双向计费</b>（入站下载流量 + 出站上传流量合计扣除月度配额）；部分亚太或优化线路商家采用<b>仅出站计费（Outbound Only）</b>，即只统计服务器向外发送数据的流量。如果你的业务需要频繁拉取镜像或同步备份，双向计费会更快消耗额度。</p>
+    <h2>Q4：为什么超低价年付套餐通常不支持退款？</h2>
+    <p>由于促销款利润空间极低，且新开 IP 资源与支付通道存在固定成本，多数商家在促销条款中会明确规定「特价款 / 清仓款（Clearance）不支持无理由退款」，或仅提供 24～72 小时内的首次故障退款窗口。下单前务必核对商家结账页面的 TOS 勾选框。</p>
+    <h2>Q5：如何降低小厂「跑路」或超售严重带来的风险？</h2>
+    <ol>
+      <li><b>控制预付周期</b>：对成立不满两年的新晋商家，尽量选择月付或季付，不要轻易一次性购买三年付。</li>
+      <li><b>使用支持争议处理的支付方式</b>：如 PayPal 或主流信用卡，避免使用不可逆转账方式为高风险特价单大额充值。</li>
+      <li><b>坚持异地备份</b>：无论大厂小厂，重要网站数据与数据库都应每天自动备份到对象存储（如 R2/S3）或本地。</li>
+    </ol>
+    <h2>Q6：什么是 Looking Glass（LG）？下单前为什么要测？</h2>
+    <p>Looking Glass 是商家公开提供的网络测试页面，通常包含测试 IPv4/IPv6、100MB/1GB 测速文件下载链接以及在线 Ping/MTR 路由追踪工具。通过测试本地宽带到目标机房的延迟、丢包率与回程路由，可以提前判断该节点是否适合你的访问人群。</p>
+    <h2>Q7：标配只有 IPv6 没有独立 IPv4 的机器能建站吗？</h2>
+    <p>可以，但需要搭配 Cloudflare 等支持 IPv6 回源的 CDN 使用，或者通过 NAT IPv4 端口映射转发。如果需要在国内直连 SSH 管理，本机网络必须支持 IPv6，否则需要借助跳板机中转。</p>
+    <h2>Q8：购买后发现 IP 不通或无法连接 SSH 怎么办？</h2>
+    <p>首先通过商家控制台的 VNC（noVNC）登录系统，确认防火墙是否放行了 SSH 端口（默认 22）以及网卡是否正确配置了网关；若 VNC 内可正常联网但外部无法 Ping 通，可能是分配到了被墙段 IP，可及时提交工单（Ticket）说明情况申请免费或付费更换 IP。</p>
+  </article>
+  <footer>
+    <div><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <b>选购 FAQ</b> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <a href="privacy.html">隐私政策</a></div>
+    <div>© 2026 share600.de5.net · 独立 VPS 优惠监测与信息整理</div>
+  </footer>
+</div>
+</body>
+</html>

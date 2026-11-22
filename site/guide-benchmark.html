@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新购 VPS 验收与性能测试实操指南 - Share600 VPS 促销雷达</title>
+<meta name="description" content="新购 VPS 到手后的标准验收清单：CPU/磁盘 I/O 测试、回程路由验证与基础安全加固。">
+<link rel="canonical" href="https://share600.de5.net/guide-benchmark.html">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5648933646390936" crossorigin="anonymous"></script>
+<style>
+:root{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 64px}
+.subnav{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:14px}
+h1{margin:0 0 8px;font-size:22px;line-height:1.35}
+h2{margin:22px 0 8px;font-size:16px}
+h3{margin:16px 0 6px;font-size:14.5px}
+p,li{color:var(--ink);margin:6px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:rgba(15,118,110,.08)}
+code{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.muted{color:var(--muted);font-size:13px}
+footer{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<nav aria-label="Share600 站群导航" style="background:#0f172a;color:#cbd5e1;border-bottom:1px solid #1e293b;font-size:12.5px;">
+  <div style="max-width:1180px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;overflow-x:auto;white-space:nowrap;">
+    <span style="font-weight:600;color:#94a3b8;font-size:12px;flex-shrink:0;">Share600 工具矩阵</span>
+    <a href="https://100xx.xx.kg/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🛠️ 开源资源站</a>
+    <a href="https://share600.de5.net/" style="color:#fff;font-weight:600;text-decoration:none;padding:3px 10px;border-radius:999px;background:#2563eb;">🖥️ VPS 促销雷达</a>
+    <a href="https://freebie.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🎁 福利资源雷达</a>
+    <a href="https://sms.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">📱 SMS 接码比价</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="subnav"><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <b>验收与测速</b> · <a href="privacy.html">隐私政策</a></div>
+  <article class="card">
+    <h1>新购 VPS 验收与性能测试实操指南</h1>
+    <p class="muted">拿到一台新机器后，花 10 分钟确认硬件规格、网络质量与基础安全</p>
+    <h2>第一步：核对基础硬件与磁盘性能</h2>
+    <p>促销页面标注的 CPU 核心数、内存容量与 NVMe 固态硬盘规格，在开通后应第一时间核验。可以通过以下命令快速确认系统基础信息：</p>
+    <ul>
+      <li><code>lscpu</code> 或 <code>nproc</code>：核对逻辑核心数与 CPU 型号（关注是否限制了单核主频）。</li>
+      <li><code>free -h</code> 与 <code>df -h</code>：检查可用物理内存、Swap 空间与实际挂载的磁盘分区容量。</li>
+      <li><b>磁盘 I/O 评估</b>：使用 <code>fio</code> 测试 4K 随机读写（对数据库和网页响应至关重要），不要仅依赖单一的顺序 <code>dd</code> 写入结果。NVMe 宿主机正常的 4K 随机读写通常在数百 MB/s 以上；若长期低于 50 MB/s，说明宿主机磁盘负载较高。</li>
+    </ul>
+    <h2>第二步：网络吞吐与回程路由检查</h2>
+    <p>除了查看商家提供的 Looking Glass，在机器内部也可以结合本地测速与路由追踪工具验证网络质量：</p>
+    <ul>
+      <li>使用 <code>mtr -rwzbc 20 &lt;本地公网IP&gt;</code> 观察从 VPS 返回你本地宽带的每一跳延迟与丢包情况。</li>
+      <li>测试单线程与多线程下载速率，确认是否存在明显的端口限速（例如标称 1Gbps 带宽但单线程被限制在 50Mbps 以内）。</li>
+    </ul>
+    <h2>第三步：基础系统加固（上线前必做）</h2>
+    <p>刚开通的公网 VPS 很快就会遭到自动化扫描器爆破。在部署任何正式业务前，建议完成以下四项基础配置：</p>
+    <ol>
+      <li><b>切换为 SSH 密钥登录</b>：在 <code>/etc/ssh/sshd_config</code> 中设置 <code>PasswordAuthentication no</code>，彻底杜绝暴力破解风险。</li>
+      <li><b>启用系统防火墙</b>：使用 <code>ufw</code> 或 <code>firewalld</code> 仅放行必需端口（如 SSH、80、443）。</li>
+      <li><b>开启 BBR 拥塞控制</b>：对于 Linux 4.9+ 内核的 KVM 机器，启用 TCP BBR 可显著提升高延迟或轻度丢包环境下的单线程传输效率。</li>
+      <li><b>配置自动安全更新</b>：Debian/Ubuntu 系统可启用 <code>unattended-upgrades</code>，及时修补高危系统漏洞。</li>
+    </ol>
+  </article>
+  <footer>
+    <div><a href="./">实时促销雷达</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <b>验收与测速</b> · <a href="privacy.html">隐私政策</a></div>
+    <div>© 2026 share600.de5.net · 独立 VPS 优惠监测与信息整理</div>
+  </footer>
+</div>
+</body>
+</html>
