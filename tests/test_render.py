@@ -459,3 +459,24 @@ def test_vendor_url_is_escaped(tmp_path):
     render.build_site(payload, str(tmp_path), verbose=False)
     html = open(os.path.join(tmp_path, "index.html"), encoding="utf-8").read()
     assert "<script>bad()</script>" not in html, "存在未转义的注入"
+
+
+def test_guide_pages_and_sitemap_generated(tmp_path):
+    """静态站构建应同时输出全部原创指南页与 privacy.html，并写入 sitemap.xml。"""
+    render.build_site(_sample_payload(), str(tmp_path), verbose=False)
+    expected_pages = [
+        "privacy.html",
+        "about.html",
+        "faq.html",
+        "guide-routes.html",
+        "guide-benchmark.html",
+    ]
+    sitemap = open(os.path.join(tmp_path, "sitemap.xml"), encoding="utf-8").read()
+    index_html = open(os.path.join(tmp_path, "index.html"), encoding="utf-8").read()
+    for name in expected_pages:
+        page_path = os.path.join(tmp_path, name)
+        assert os.path.isfile(page_path), f"缺少静态页面: {name}"
+        content = open(page_path, encoding="utf-8").read()
+        assert "<title>" in content and "Share600" in content
+        assert name in sitemap, f"sitemap.xml 未包含 {name}"
+        assert name in index_html, f"index.html 未链接到 {name}"

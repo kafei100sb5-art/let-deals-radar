@@ -392,15 +392,15 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
   <div class="guide-grid">
     <div class="guide-item">
       <b>1. 常见网络线路参考</b>
-      CN2 GIA / AS9929 / CMI 属于高优先级回国优化线路，晚高峰丢包率较低；普通 BGP 或直连线路适合建站、中转及海外业务，下单前建议先测试商家提供的 Looking Glass 或测试 IP。
+      CN2 GIA / AS9929 / CMI 属于高优先级回国优化线路，晚高峰丢包率较低；普通 BGP 或直连线路适合建站、中转及海外业务，下单前建议先测试商家提供的 Looking Glass 或测试 IP。<a href="guide-routes.html">查看线路深度解析 &rarr;</a>
     </div>
     <div class="guide-item">
       <b>2. 循环折扣 vs 首年特价</b>
-      标注「循环」的优惠码在后续续费时保持同等折扣；未标注循环的促销通常仅限首期账单有效，长期使用请以厂商结算页显示的续费原价为准。
+      标注「循环」的优惠码在后续续费时保持同等折扣；未标注循环的促销通常仅限首期账单有效，长期使用请以厂商结算页显示的续费原价为准。<a href="faq.html">查看选购 FAQ &rarr;</a>
     </div>
     <div class="guide-item">
-      <b>3. 虚拟化与退款提醒</b>
-      KVM 支持独立内核与完整容器运行环境，适合 Docker 与常规服务；LXC / OpenVZ 共享宿主机内核，部分内核模块受限。特价年付或清仓机型通常不支持无理由退款，请按需购买。
+      <b>3. 虚拟化与验收测试</b>
+      KVM 支持独立内核与完整容器运行环境，适合 Docker 与常规服务；LXC / OpenVZ 共享宿主机内核。新购机器建议先做回程路由与磁盘 I/O 验收。<a href="guide-benchmark.html">查看验收测速指南 &rarr;</a>
     </div>
   </div>
 </section>
@@ -408,7 +408,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
 <footer>
   <div>本站汇总公开渠道的优惠信息，仅作信息聚合，<b>不构成购买建议</b>。</div>
   <div>@@FXNOTE@@</div>
-  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。 · <a href="privacy.html">隐私政策</a></div>
+  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。 · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">线路指南</a> · <a href="guide-benchmark.html">验收测速</a> · <a href="privacy.html">隐私政策</a></div>
   @@FOOTER@@
 </footer>
 
@@ -686,37 +686,61 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
 """
 
 
-def _render_privacy_html(extra_head: str = "") -> str:
-    """生成独立隐私政策页面 HTML，满足广告联盟与合规披露要求。"""
+def _render_article_page(
+    slug: str,
+    page_title: str,
+    description: str,
+    body_html: str,
+    extra_head: str = "",
+) -> str:
+    """使用统一样式与站群导航渲染独立静态文章/合规页面。"""
     title = html.escape(config.SITE_TITLE)
     site_url = html.escape(config.SITE_URL or "/")
-    canonical = (f'<link rel="canonical" href="{site_url}/privacy.html">'
+    canonical = (f'<link rel="canonical" href="{site_url}/{slug}">'
                  if config.SITE_URL else "")
     footer_line = (f"<div>{html.escape(config.SITE_FOOTER)}</div>"
                    if config.SITE_FOOTER else "")
+    nav_items = [
+        ("./", "实时促销雷达"),
+        ("about.html", "关于本站"),
+        ("faq.html", "选购 FAQ"),
+        ("guide-routes.html", "优化线路指南"),
+        ("guide-benchmark.html", "验收与测速"),
+        ("privacy.html", "隐私政策"),
+    ]
+    subnav = " · ".join(
+        f'<b>{label}</b>' if href == slug else f'<a href="{href}">{label}</a>'
+        for href, label in nav_items
+    )
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>隐私政策 - {title}</title>
-<meta name="description" content="{title} 隐私政策、Cookie 与第三方广告说明">
+<title>{html.escape(page_title)} - {title}</title>
+<meta name="description" content="{html.escape(description, quote=True)}">
 {canonical}
 {extra_head}
 <style>
 :root{{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}}
 @media(prefers-color-scheme:dark){{:root{{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}}}
 *{{box-sizing:border-box}}
-body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.8 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}}
+body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}}
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .wrap{{max-width:860px;margin:0 auto;padding:28px 18px 64px}}
-.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-top:16px}}
-h1{{margin:0 0 8px;font-size:22px}}
-h2{{margin:20px 0 8px;font-size:16px}}
+.subnav{{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9}}
+.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:14px}}
+h1{{margin:0 0 8px;font-size:22px;line-height:1.35}}
+h2{{margin:22px 0 8px;font-size:16px}}
+h3{{margin:16px 0 6px;font-size:14.5px}}
 p,li{{color:var(--ink);margin:6px 0}}
+table{{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}}
+th,td{{border:1px solid var(--line);padding:8px 10px;text-align:left}}
+th{{background:rgba(15,118,110,.08)}}
+code{{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}}
 .muted{{color:var(--muted);font-size:13px}}
-footer{{margin-top:24px;color:var(--muted);font-size:12px}}
+footer{{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.8}}
 </style>
 </head>
 <body>
@@ -730,9 +754,24 @@ footer{{margin-top:24px;color:var(--muted);font-size:12px}}
   </div>
 </nav>
 <div class="wrap">
-  <p><a href="./">&larr; 返回 {title} 首页</a></p>
+  <div class="subnav">{subnav}</div>
   <article class="card">
-    <h1>隐私政策与声明</h1>
+    {body_html}
+  </article>
+  <footer>
+    <div>{subnav}</div>
+    {footer_line}
+  </footer>
+</div>
+</body>
+</html>
+"""
+
+
+def _render_privacy_html(extra_head: str = "") -> str:
+    """生成独立隐私政策页面 HTML，满足广告联盟与合规披露要求。"""
+    site_url = html.escape(config.SITE_URL or "/")
+    body = f"""<h1>隐私政策与声明</h1>
     <p class="muted">适用站点：{site_url}</p>
     <h2>1. 信息收集与本地存储</h2>
     <p>本站为纯静态公开信息聚合站点，不提供用户注册或登录功能，亦不主动收集用户的个人身份信息。</p>
@@ -743,15 +782,125 @@ footer{{margin-top:24px;color:var(--muted);font-size:12px}}
       <li>您可访问 Google 广告设置或通过浏览器设置管理及停用个性化广告 Cookie。</li>
     </ul>
     <h2>3. 外部链接与返利声明</h2>
-    <p>本站汇总的 VPS 促销信息均来自公开渠道，部分商家链接可能包含推广返利（Affiliate）参数，但不会额外增加您的购买成本。产品配置、价格与库存以商家官网结算页面为准。</p>
-  </article>
-  <footer>
-    {footer_line}
-  </footer>
-</div>
-</body>
-</html>
-"""
+    <p>本站汇总的 VPS 促销信息均来自公开渠道，部分商家链接可能包含推广返利（Affiliate）参数，但不会额外增加您的购买成本。产品配置、价格与库存以商家官网结算页面为准。</p>"""
+    return _render_article_page(
+        "privacy.html",
+        "隐私政策",
+        f"{config.SITE_TITLE} 隐私政策、Cookie 与第三方广告说明",
+        body,
+        extra_head,
+    )
+
+
+STATIC_GUIDE_PAGES = [
+    (
+        "about.html",
+        "关于本站与监测方法",
+        "了解 Share600 VPS 促销雷达的数据来源、库存判定机制与评分逻辑。",
+        """<h1>关于本站与数据监测方法</h1>
+    <p class="muted">透明、客观的 VPS 促销信息聚合与库存追踪说明</p>
+    <h2>1. 为什么做这个监测站</h2>
+    <p>海外 VPS 社区（如 LowEndTalk、LowEndBox）每天都会发布大量限时促销、周年庆特价、黑五闪购与补货通知。但原帖往往是纯英文长文，参数分散、优惠码易过期，而且很多低价套餐在发布数小时内就会售罄（Out of Stock）。本站通过自动化脚本定时抓取公开资讯，将核心配置、折后年付/月付价格、是否循环折扣与实时库存状态整理成可筛选的中文看板，帮助开发者和站长快速定位高性价比主机。</p>
+    <h2>2. 数据采集与更新频率</h2>
+    <ul>
+      <li><b>公开数据源</b>：主要采集自 LowEndTalk Offers 版块及 LowEndBox 公开 RSS 订阅源，不抓取任何需要登录权限的私密内容。</li>
+      <li><b>自动刷新周期</b>：后台流水线每 12 小时自动拉取最新促销帖并重新解析，更新后的纯静态页面会同步推送至全球边缘缓存节点。</li>
+      <li><b>多币种统一折算</b>：为方便横向对比性价比，系统会按公开参考汇率将 EUR、GBP、CAD 等货币折算为 USD 与 CNY 供参考，实际扣款金额以结算页为准。</li>
+    </ul>
+    <h2>3. 库存状态如何判定</h2>
+    <p>许多用户最怕点开特价链接后发现已售罄。针对支持公开讨论串的数据源，解析器会自动读取帖子末页中<b>商家官方账号（Original Poster）</b>的最新发布回复，结合常见补货（Restock）与售罄（Sold Out / Out of Stock）关键词进行交叉判定；若商家未在帖内说明，则标注为「待确认」。</p>
+    <h2>4. 独立性与免责说明</h2>
+    <p>本站仅提供公开市场信息的整理与检索，不代表任何云服务商的官方立场，也不对商家的服务稳定性做担保。在购买任何年付或特价 VPS 前，建议先查阅服务条款（TOS）、测试 Looking Glass 网络延迟，并做好异地数据备份。</p>""",
+    ),
+    (
+        "faq.html",
+        "VPS 选购常见问答 (FAQ)",
+        "解答循环折扣、KVM 与 LXC 区别、流量计费、退款政策与防跑路等常见问题。",
+        """<h1>VPS 选购常见问答（FAQ）</h1>
+    <p class="muted">整理新手与站长在选购海外特价 VPS 时最常遇到的 8 个核心问题</p>
+    <h2>Q1：什么是「循环折扣（Recurring）」？和首年特价有什么区别？</h2>
+    <p><b>循环折扣</b>指你在首期付款时享受的优惠价格，在后续按月或按年续费时依然保持不变（只要不主动取消服务）。而<b>非循环优惠（One-time）</b>仅限第一张账单打折，第二年续费将恢复原价。长期建站或跑稳定业务时，应优先筛选标注「循环」的套餐。</p>
+    <h2>Q2：KVM、LXC 与 OpenVZ 虚拟化该怎么选？</h2>
+    <ul>
+      <li><b>KVM</b>：完全硬件虚拟化，拥有独立内核，支持自定义操作系统、开启 BBR 拥塞控制以及流畅运行 Docker 容器，是生产环境的首选。</li>
+      <li><b>LXC / OpenVZ</b>：操作系统级虚拟化，与宿主机共享内核。虽然价格往往更低，但通常无法加载部分内核模块，且容易受同宿主机邻居资源争抢影响，更适合轻量学习或临时测试。</li>
+    </ul>
+    <h2>Q3：单向流量和双向流量怎么计算？</h2>
+    <p>大部分北美与欧洲廉价 VPS 采用<b>双向计费</b>（入站下载流量 + 出站上传流量合计扣除月度配额）；部分亚太或优化线路商家采用<b>仅出站计费（Outbound Only）</b>，即只统计服务器向外发送数据的流量。如果你的业务需要频繁拉取镜像或同步备份，双向计费会更快消耗额度。</p>
+    <h2>Q4：为什么超低价年付套餐通常不支持退款？</h2>
+    <p>由于促销款利润空间极低，且新开 IP 资源与支付通道存在固定成本，多数商家在促销条款中会明确规定「特价款 / 清仓款（Clearance）不支持无理由退款」，或仅提供 24～72 小时内的首次故障退款窗口。下单前务必核对商家结账页面的 TOS 勾选框。</p>
+    <h2>Q5：如何降低小厂「跑路」或超售严重带来的风险？</h2>
+    <ol>
+      <li><b>控制预付周期</b>：对成立不满两年的新晋商家，尽量选择月付或季付，不要轻易一次性购买三年付。</li>
+      <li><b>使用支持争议处理的支付方式</b>：如 PayPal 或主流信用卡，避免使用不可逆转账方式为高风险特价单大额充值。</li>
+      <li><b>坚持异地备份</b>：无论大厂小厂，重要网站数据与数据库都应每天自动备份到对象存储（如 R2/S3）或本地。</li>
+    </ol>
+    <h2>Q6：什么是 Looking Glass（LG）？下单前为什么要测？</h2>
+    <p>Looking Glass 是商家公开提供的网络测试页面，通常包含测试 IPv4/IPv6、100MB/1GB 测速文件下载链接以及在线 Ping/MTR 路由追踪工具。通过测试本地宽带到目标机房的延迟、丢包率与回程路由，可以提前判断该节点是否适合你的访问人群。</p>
+    <h2>Q7：标配只有 IPv6 没有独立 IPv4 的机器能建站吗？</h2>
+    <p>可以，但需要搭配 Cloudflare 等支持 IPv6 回源的 CDN 使用，或者通过 NAT IPv4 端口映射转发。如果需要在国内直连 SSH 管理，本机网络必须支持 IPv6，否则需要借助跳板机中转。</p>
+    <h2>Q8：购买后发现 IP 不通或无法连接 SSH 怎么办？</h2>
+    <p>首先通过商家控制台的 VNC（noVNC）登录系统，确认防火墙是否放行了 SSH 端口（默认 22）以及网卡是否正确配置了网关；若 VNC 内可正常联网但外部无法 Ping 通，可能是分配到了被墙段 IP，可及时提交工单（Ticket）说明情况申请免费或付费更换 IP。</p>""",
+    ),
+    (
+        "guide-routes.html",
+        "国内访问常见优化线路深度解析",
+        "对比 CN2 GIA、联通 AS9929、移动 CMI、日本软银与香港 BGP 线路特征与适用场景。",
+        """<h1>国内访问常见优化线路深度解析</h1>
+    <p class="muted">从普通直连到高优先级精品网：读懂机房线路标识，避免花冤枉钱</p>
+    <h2>1. 为什么同地区机房速度差异巨大？</h2>
+    <p>决定国内访问海外 VPS 体验的核心，并不只是机房到中国大陆的物理距离，而是数据包经过的<b>国际出口骨干网级别</b>以及<b>去程/回程路由是否一致</b>。普通民用骨干网（如电信 163、联通 4837 普通段）在晚高峰（20:00–23:30）极易出现跨网拥堵和丢包；而商业精品线路则通过独立优先级通道保障低丢包与低抖动。</p>
+    <h2>2. 主流回国优化线路横向对比</h2>
+    <table>
+      <thead>
+        <tr><th>线路名称</th><th>所属运营商</th><th>核心特征</th><th>适用场景</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>CN2 GIA (AS4809)</b></td><td>中国电信</td><td>去程与回程均走 59.43 精品节点，晚高峰丢包极低</td><td>面向国内用户的建站、低延迟交互服务</td></tr>
+        <tr><td><b>CN2 GT</b></td><td>中国电信</td><td>仅部分国际段走 59.43，国内段仍走 163 骨干</td><td>预算有限的轻量应用，晚高峰仍有一定波动</td></tr>
+        <tr><td><b>AS9929 (CUII)</b></td><td>中国联通</td><td>联通高端政企精品网，对标电信 CN2 GIA</td><td>三网均衡优化，性价比通常高于同配置 GIA</td></tr>
+        <tr><td><b>AS4837</b></td><td>中国联通</td><td>联通普通民用国际出口，带宽充沛、价格低廉</td><td>大流量下载、常规海外业务与中转备选</td></tr>
+        <tr><td><b>CMI / CMIN2</b></td><td>中国移动</td><td>移动国际骨干（CMIN2 为新一代精品网）</td><td>移动宽带直连友好，亚太方向延迟表现优异</td></tr>
+        <tr><td><b>日本 SoftBank / IIJ</b></td><td>日本本土运营商</td><td>软银对联通友好、IIJ 晚高峰相对平稳</td><td>亚太低延迟建站与东亚区域节点</td></tr>
+      </tbody>
+    </table>
+    <h2>3. 什么是「三网回程优化」与「单网优化」？</h2>
+    <p>部分机房（如美西洛杉矶部分 CERA、GSL 或香港优化机房）会接入多条商业线路，并通过 BGP 策略实现「电信走 CN2 GIA、联通走 9929、移动走 CMIN2」，即所谓的<b>三网各自优化</b>。而有些低价特价款仅在去程接入普通线路、回程走单网优化（例如三网回程统一走联通 4837 或电信 GIA），选购时应看清商家标注是「双程」还是「单程回程」。</p>
+    <h2>4. 如何自行验证线路真伪？</h2>
+    <ul>
+      <li><b>不要只看白天 Ping 值</b>：普通线路在凌晨和工作日上午延迟同样很低，真正拉开差距的是每晚 21:00–22:30 的丢包率与抖动。</li>
+      <li><b>用 MTR 观察路由跳数</b>：关注路径中是否出现 <code>59.43.*.*</code>（电信 CN2）、<code>218.105.*.* / 210.51.*.*</code>（联通 9929）或 <code>223.120.*.*</code>（移动 CMI）等特征节点。</li>
+    </ul>""",
+    ),
+    (
+        "guide-benchmark.html",
+        "新购 VPS 验收与性能测试实操指南",
+        "新购 VPS 到手后的标准验收清单：CPU/磁盘 I/O 测试、回程路由验证与基础安全加固。",
+        """<h1>新购 VPS 验收与性能测试实操指南</h1>
+    <p class="muted">拿到一台新机器后，花 10 分钟确认硬件规格、网络质量与基础安全</p>
+    <h2>第一步：核对基础硬件与磁盘性能</h2>
+    <p>促销页面标注的 CPU 核心数、内存容量与 NVMe 固态硬盘规格，在开通后应第一时间核验。可以通过以下命令快速确认系统基础信息：</p>
+    <ul>
+      <li><code>lscpu</code> 或 <code>nproc</code>：核对逻辑核心数与 CPU 型号（关注是否限制了单核主频）。</li>
+      <li><code>free -h</code> 与 <code>df -h</code>：检查可用物理内存、Swap 空间与实际挂载的磁盘分区容量。</li>
+      <li><b>磁盘 I/O 评估</b>：使用 <code>fio</code> 测试 4K 随机读写（对数据库和网页响应至关重要），不要仅依赖单一的顺序 <code>dd</code> 写入结果。NVMe 宿主机正常的 4K 随机读写通常在数百 MB/s 以上；若长期低于 50 MB/s，说明宿主机磁盘负载较高。</li>
+    </ul>
+    <h2>第二步：网络吞吐与回程路由检查</h2>
+    <p>除了查看商家提供的 Looking Glass，在机器内部也可以结合本地测速与路由追踪工具验证网络质量：</p>
+    <ul>
+      <li>使用 <code>mtr -rwzbc 20 &lt;本地公网IP&gt;</code> 观察从 VPS 返回你本地宽带的每一跳延迟与丢包情况。</li>
+      <li>测试单线程与多线程下载速率，确认是否存在明显的端口限速（例如标称 1Gbps 带宽但单线程被限制在 50Mbps 以内）。</li>
+    </ul>
+    <h2>第三步：基础系统加固（上线前必做）</h2>
+    <p>刚开通的公网 VPS 很快就会遭到自动化扫描器爆破。在部署任何正式业务前，建议完成以下四项基础配置：</p>
+    <ol>
+      <li><b>切换为 SSH 密钥登录</b>：在 <code>/etc/ssh/sshd_config</code> 中设置 <code>PasswordAuthentication no</code>，彻底杜绝暴力破解风险。</li>
+      <li><b>启用系统防火墙</b>：使用 <code>ufw</code> 或 <code>firewalld</code> 仅放行必需端口（如 SSH、80、443）。</li>
+      <li><b>开启 BBR 拥塞控制</b>：对于 Linux 4.9+ 内核的 KVM 机器，启用 TCP BBR 可显著提升高延迟或轻度丢包环境下的单线程传输效率。</li>
+      <li><b>配置自动安全更新</b>：Debian/Ubuntu 系统可启用 <code>unattended-upgrades</code>，及时修补高危系统漏洞。</li>
+    </ol>""",
+    ),
+]
 
 
 def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
@@ -809,6 +958,11 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     with open(privacy_path, "w", encoding="utf-8") as f:
         f.write(_render_privacy_html(extra_head))
 
+    for slug, page_title, desc, body_html in STATIC_GUIDE_PAGES:
+        page_path = os.path.join(out_dir, slug)
+        with open(page_path, "w", encoding="utf-8") as f:
+            f.write(_render_article_page(slug, page_title, desc, body_html, extra_head))
+
     # 部署辅助文件
     with open(os.path.join(out_dir, ".nojekyll"), "w", encoding="utf-8") as f:
         f.write("")
@@ -834,11 +988,15 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     # 未配置域名时用相对路径，避免生成无效的绝对地址
     loc = f"{config.SITE_URL}/" if config.SITE_URL else "/"
+    sitemap_urls = ["", "privacy.html", *(slug for slug, _, _, _ in STATIC_GUIDE_PAGES)]
+    sitemap_entries = "".join(
+        f'  <url><loc>{loc}{path}</loc><lastmod>{today}</lastmod></url>\n'
+        for path in sitemap_urls
+    )
     with open(os.path.join(out_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-                f'  <url><loc>{loc}</loc><lastmod>{today}</lastmod></url>\n'
-                f'  <url><loc>{loc}privacy.html</loc><lastmod>{today}</lastmod></url>\n'
+                f'{sitemap_entries}'
                 '</urlset>\n')
 
     # 站点图标：从 assets/ 复制到输出目录。
