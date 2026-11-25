@@ -1,8 +1,8 @@
 | 来源 | 厂商 | 活动性质 | 力度 | 配置/CPU | 旗舰价 | 状态 | 置信度 |
 |---|---|---|---|---|---|---|---|
 | LET | racknerd.com | 黑五 | 循环/永久 · double bandwidth | 6C/16G/512GNVMe / Ryzen 7 250 | $9.49/年 | 待确认 | 1.00 |
-| LET | godlike.host | 常规帖 | 最高 50% off · 码 LEB50 | 2C/4G/50GNVMe / Ryzen 9 9950X3D | $4/月 | 待确认 | 1.00 |
 | LET | hostnamaste.com | 黑五 | — | 1G | $5/年 | 待确认 | 0.33 |
+| LET | godlike.host | 常规帖 | 最高 50% off · 码 LEB50 | 2C/4G/50GNVMe / Ryzen 9 9950X3D | $4/月 | 待确认 | 1.00 |
 | LET | tpoll | 常规促销 | 循环/永久 · 码 HAS/OCTRYZI92GB | 0G/50GNVME | $16.99/年 | 待确认(较旧) | 0.67 |
 | LET | servury.com | 黑五 | 循环/永久 · 最高 30% off · 码 BFLET30 | 2C/50GNVMe | $4.99/月 | 待确认 | 0.67 |
 | LET | lg.svr | 常规帖 | 循环/永久 · free upgrade | 1C/1024GNVMe SSD / Ryzen 7 5700G | $15.88/年 | 待确认(较旧) | 0.83 |
