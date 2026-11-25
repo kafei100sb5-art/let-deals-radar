@@ -38,6 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(_env("LDR_DATA_DIR", str(ROOT / "data")))
 SITE_DIR = Path(_env("LDR_SITE_DIR", str(ROOT / "site")))
 REPLY_CACHE_DIR = DATA_DIR / "replies"
+ARTICLES_DIR = Path(_env("LDR_ARTICLES_DIR", str(DATA_DIR / "articles")))
 
 # 站点静态资源（图标等）。与抓取数据分开：这些是需要版本管理的品牌素材，
 # 不是可重建的缓存。

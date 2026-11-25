@@ -13,7 +13,7 @@ import os
 import shutil
 from datetime import datetime, timezone
 
-from . import config
+from . import articles, config
 from .extract import AVAIL_CN, EVENT_CN
 
 # 活动性质的「力度权重」，用于综合评分
@@ -327,6 +327,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
     <span>数据来源 · 公开优惠信息</span>
     <span>共 <b id="m-total">@@COUNT@@</b> 条</span>
     <span>生成于 <b>@@GENERATED@@</b></span>
+    <span><a href="articles.html">行情专栏</a></span>
     <span><a href="data/deals.json">原始 JSON</a></span>
     @@HEADER_LINKS@@
   </div>
@@ -387,6 +388,8 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
   <div class="empty" id="empty" style="display:none">没有匹配的条目</div>
 </div>
 
+@@LATEST_ARTICLES@@
+
 <section class="card guide" aria-label="VPS 选购与线路速查">
   <h2>VPS 选购与线路速查</h2>
   <div class="guide-grid">
@@ -408,7 +411,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.9}
 <footer>
   <div>本站汇总公开渠道的优惠信息，仅作信息聚合，<b>不构成购买建议</b>。</div>
   <div>@@FXNOTE@@</div>
-  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。 · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">线路指南</a> · <a href="guide-benchmark.html">验收测速</a> · <a href="privacy.html">隐私政策</a></div>
+  <div>库存与价格以厂商官网为准；标注「待确认」表示未能自动验证。 · <a href="articles.html">行情专栏</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">线路指南</a> · <a href="guide-benchmark.html">验收测速</a> · <a href="privacy.html">隐私政策</a></div>
   @@FOOTER@@
 </footer>
 
@@ -702,6 +705,7 @@ def _render_article_page(
                    if config.SITE_FOOTER else "")
     nav_items = [
         ("./", "实时促销雷达"),
+        ("articles.html", "行情专栏"),
         ("about.html", "关于本站"),
         ("faq.html", "选购 FAQ"),
         ("guide-routes.html", "优化线路指南"),
@@ -934,6 +938,8 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
         )
     extra_head = "\n".join(extra_head_parts)
 
+    article_items = articles.load_articles()
+
     html_out = (SITE_TEMPLATE
                 .replace("@@TITLE@@", html.escape(config.SITE_TITLE))
                 .replace("@@DESC@@", html.escape(config.SITE_DESC, quote=True))
@@ -946,6 +952,8 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
                 .replace("@@AVAIL_CN@@", json.dumps(AVAIL_CN, ensure_ascii=False))
                 .replace("@@FXNOTE@@", html.escape(config.FX_NOTE))
                 .replace("@@HEADER_LINKS@@", _header_links_html())
+                .replace("@@LATEST_ARTICLES@@",
+                         articles.render_latest_articles_section(article_items))
                 .replace("@@FOOTER@@",
                          html.escape(config.SITE_FOOTER) if config.SITE_FOOTER
                          else ""))
@@ -962,6 +970,51 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
         page_path = os.path.join(out_dir, slug)
         with open(page_path, "w", encoding="utf-8") as f:
             f.write(_render_article_page(slug, page_title, desc, body_html, extra_head))
+
+    articles_index_path = os.path.join(out_dir, "articles.html")
+    with open(articles_index_path, "w", encoding="utf-8") as f:
+        f.write(_render_article_page(
+            "articles.html",
+            "VPS 行情观察与深度评测专栏",
+            "每日 VPS 促销行情分析、高频厂商评测与选购避坑指南。",
+            articles.render_articles_index_body(article_items),
+            extra_head,
+        ))
+
+    for idx, art in enumerate(article_items):
+        prev_link = (
+            f'<a href="{html.escape(article_items[idx + 1].href)}">&larr; {html.escape(article_items[idx + 1].title)}</a>'
+            if idx + 1 < len(article_items) else ""
+        )
+        next_link = (
+            f'<a href="{html.escape(article_items[idx - 1].href)}">{html.escape(article_items[idx - 1].title)} &rarr;</a>'
+            if idx > 0 else ""
+        )
+        nav_footer = (
+            '<div style="margin-top:24px;padding-top:14px;border-top:1px solid var(--line);'
+            'display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:13px;">'
+            f'<div>{prev_link}</div>'
+            '<div><a href="articles.html">返回专栏列表</a> · <a href="./">查看实时促销雷达</a></div>'
+            f'<div>{next_link}</div>'
+            '</div>'
+        )
+        art_body = (
+            f'<div class="muted" style="font-size:12.5px;margin-bottom:6px;">'
+            f'<a href="articles.html">行情专栏</a> / {html.escape(art.category)} · 发布于 {html.escape(art.date)}</div>'
+            f'<h1>{html.escape(art.title)}</h1>'
+            f'<p class="muted">{html.escape(art.summary)}</p>'
+            f'{art.body_html}'
+            f'{nav_footer}'
+        )
+        art_path = os.path.join(out_dir, art.href)
+        with open(art_path, "w", encoding="utf-8") as f:
+            f.write(_render_article_page(
+                art.href,
+                art.title,
+                art.summary or art.title,
+                art_body,
+                extra_head,
+            ))
 
     # 部署辅助文件
     with open(os.path.join(out_dir, ".nojekyll"), "w", encoding="utf-8") as f:
@@ -988,10 +1041,16 @@ def build_site(payload: dict, out_dir=None, verbose: bool = True) -> str:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     # 未配置域名时用相对路径，避免生成无效的绝对地址
     loc = f"{config.SITE_URL}/" if config.SITE_URL else "/"
-    sitemap_urls = ["", "privacy.html", *(slug for slug, _, _, _ in STATIC_GUIDE_PAGES)]
+    sitemap_urls = [
+        ("", today),
+        ("articles.html", today),
+        ("privacy.html", today),
+        *((slug, today) for slug, _, _, _ in STATIC_GUIDE_PAGES),
+        *((art.href, art.date or today) for art in article_items),
+    ]
     sitemap_entries = "".join(
-        f'  <url><loc>{loc}{path}</loc><lastmod>{today}</lastmod></url>\n'
-        for path in sitemap_urls
+        f'  <url><loc>{loc}{path}</loc><lastmod>{lastmod}</lastmod></url>\n'
+        for path, lastmod in sitemap_urls
     )
     with open(os.path.join(out_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n'

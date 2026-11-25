@@ -480,3 +480,34 @@ def test_guide_pages_and_sitemap_generated(tmp_path):
         assert "<title>" in content and "Share600" in content
         assert name in sitemap, f"sitemap.xml 未包含 {name}"
         assert name in index_html, f"index.html 未链接到 {name}"
+
+
+def test_articles_section_rendered_and_in_sitemap(tmp_path, monkeypatch):
+    """专栏文章目录应渲染出 articles.html、独立文章页与 sitemap 条目。"""
+    art_dir = tmp_path / "articles"
+    art_dir.mkdir()
+    (art_dir / "2026-11-25-sample.md").write_text(
+        "---\n"
+        "slug: sample-watch\n"
+        "title: 测试行情观察\n"
+        "date: 2026-11-25\n"
+        "category: 行情观察\n"
+        "summary: 一段测试摘要。\n"
+        "---\n\n"
+        "## 小标题\n\n"
+        "- 第一点 **加粗**\n"
+        "- 第二点 [雷达](./)\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config, "ARTICLES_DIR", art_dir)
+    out_dir = tmp_path / "site"
+    render.build_site(_sample_payload(), str(out_dir), verbose=False)
+
+    assert (out_dir / "articles.html").is_file()
+    art_html = (out_dir / "article-sample-watch.html").read_text(encoding="utf-8")
+    assert "<h2>小标题</h2>" in art_html
+    assert "<b>加粗</b>" in art_html
+    assert "测试行情观察" in (out_dir / "index.html").read_text(encoding="utf-8")
+    sitemap = (out_dir / "sitemap.xml").read_text(encoding="utf-8")
+    assert "articles.html" in sitemap
+    assert "article-sample-watch.html" in sitemap
