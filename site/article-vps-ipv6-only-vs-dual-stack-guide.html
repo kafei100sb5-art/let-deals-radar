@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>纯 IPv6 与 NAT VPS 值不值得买？低成本建站与 Cloudflare 回源实战指南 - Share600 VPS 促销雷达</title>
+<meta name="description" content="解析年付 1 到 6 美元的 IPv6-only 与 NAT IPv4 套餐适用边界，讲解如何借助 Cloudflare CDN 实现 IPv4 用户正常访问，以及 DNS64/WARP 出站避坑要点。">
+<link rel="canonical" href="https://share600.de5.net/article-vps-ipv6-only-vs-dual-stack-guide.html">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5648933646390936" crossorigin="anonymous"></script>
+<style>
+:root{--bg:#f6f8f8;--card:#fff;--ink:#16181d;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1214;--card:#171c1f;--ink:#e8eaed;--muted:#9aa0a6;--line:#272d33;--accent:#2dd4bf}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.85 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 64px}
+.subnav{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.9}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:14px}
+h1{margin:0 0 8px;font-size:22px;line-height:1.35}
+h2{margin:22px 0 8px;font-size:16px}
+h3{margin:16px 0 6px;font-size:14.5px}
+p,li{color:var(--ink);margin:6px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:rgba(15,118,110,.08)}
+code{background:rgba(127,127,127,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.muted{color:var(--muted);font-size:13px}
+footer{margin-top:24px;color:var(--muted);font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<nav aria-label="Share600 站群导航" style="background:#0f172a;color:#cbd5e1;border-bottom:1px solid #1e293b;font-size:12.5px;">
+  <div style="max-width:1180px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;overflow-x:auto;white-space:nowrap;">
+    <span style="font-weight:600;color:#94a3b8;font-size:12px;flex-shrink:0;">Share600 工具矩阵</span>
+    <a href="https://100xx.xx.kg/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🛠️ 开源资源站</a>
+    <a href="https://share600.de5.net/" style="color:#fff;font-weight:600;text-decoration:none;padding:3px 10px;border-radius:999px;background:#2563eb;">🖥️ VPS 促销雷达</a>
+    <a href="https://freebie.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">🎁 福利资源雷达</a>
+    <a href="https://sms.share600.de5.net/" target="_blank" rel="noopener" style="color:#e2e8f0;text-decoration:none;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);">📱 SMS 接码比价</a>
+  </div>
+</nav>
+<div class="wrap">
+  <div class="subnav"><a href="./">实时促销雷达</a> · <a href="articles.html">行情专栏</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <a href="privacy.html">隐私政策</a></div>
+  <article class="card">
+    <div class="muted" style="font-size:12.5px;margin-bottom:6px;"><a href="articles.html">行情专栏</a> / 网络实战 · 发布于 2026-11-27</div><h1>纯 IPv6 与 NAT VPS 值不值得买？低成本建站与 Cloudflare 回源实战指南</h1><p class="muted">解析年付 1 到 6 美元的 IPv6-only 与 NAT IPv4 套餐适用边界，讲解如何借助 Cloudflare CDN 实现 IPv4 用户正常访问，以及 DNS64/WARP 出站避坑要点。</p><p>在黑五和商家周年庆期间，经常能看到 <b>$1/年 到 $6/年</b> 的超低价套餐（例如 Gullo&#x27;s Hosting 的 KVM NAT 或部分欧洲机房的 IPv6-only VPS）。这类机器价格不到一顿快餐钱，但之所以便宜，是因为它们<b>没有独立公网 IPv4 地址</b>。如果你了解它的网络边界，它可以变成极佳的免费建站边缘节点或监控节点；如果买错了用途，则可能寸步难行。</p>
+<h2>一、 什么是 IPv6-only 与 NAT IPv4？</h2>
+<table><thead><tr><th>网络类型</th><th>分配资源</th><th>公网入站能力</th><th>常见年付价格</th></tr></thead><tbody><tr><td>双栈独立 IP（Dual-Stack）</td><td>1 个独立 IPv4 + <code>/64</code> IPv6</td><td>全端口自由绑定（80/443/SSH）</td><td>$10–$25/年</td></tr><tr><td>NAT IPv4 + 独立 IPv6</td><td>共享 IPv4（附带 10–20 个可用端口）+ IPv6</td><td>仅限指定端口转发，无法直接绑定 80/443</td><td>$2–$8/年</td></tr><tr><td>纯 IPv6（IPv6-only）</td><td>仅 <code>/64</code> 或 <code>/112</code> IPv6 子网</td><td>仅支持 IPv6 客户端直连</td><td>$1–$5/年</td></tr></tbody></table>
+<h2>二、 如何让纯 IPv6 VPS 对外提供全网（含 IPv4）可访问的网站？</h2>
+<p>很多新手误以为「纯 IPv6 机器建站，IPv4 手机或电脑就打不开」。实际上，只要你的域名托管在 <b>Cloudflare</b> 上，就可以零成本解决双栈访问问题：</p>
+<ol><li><b>开启 Cloudflare 橙色云朵代理（Proxied）</b>：在 Cloudflare DNS 面板中，为你的域名添加一条 <code>AAAA</code> 记录，指向 VPS 的独立 IPv6 地址，并确保 Proxy status 为开启状态（橙色云朵）。</li><li><b>原理说明</b>：外部访客无论使用 IPv4 还是 IPv6 网络，都会先连接到 Cloudflare 边缘节点；Cloudflare 边缘再通过原生 IPv6 回源到你的 VPS。</li><li><b>注意事项</b>：</li></ol>
+<ul><li>VPS 本机的 Nginx / Caddy 必须监听 IPv6（例如 <code>listen [::]:443 ssl;</code>）。</li><li>如果采用 Cloudflare 免费 CDN，Origin SSL 证书可以直接在 Cloudflare 面板签发 15 年有效期的 Origin Certificate，无需在纯 IPv6 环境下折腾复杂的 HTTP-01 验证。</li></ul>
+<h2>三、 纯 IPv6 环境的两大日常痛点与解法</h2>
+<p>虽然入站访问靠 Cloudflare 解决了，但在纯 IPv6 机器内部执行运维操作时，仍然会遇到<b>无法访问仅支持 IPv4 的外部服务</b>的问题（最典型的是 <code>github.com</code> 至今主要依赖 IPv4，以及部分第三方 API 和软件源）：</p>
+<ol><li><b>配置 DNS64 / NAT64 公共服务</b>：许多提供 IPv6-only 机器的商家会在控制面板或欢迎邮件里提供内置的 NAT64 网关。将 <code>/etc/resolv.conf</code> 指向商家推荐的 DNS64 地址后，系统即可透明访问绝大多数纯 IPv4 域名（如拉取 GitHub 仓库或安装安装包）。</li><li><b>使用 Cloudflare WARP 出站补齐 IPv4</b>：若商家未提供可用的 NAT64，可在机器内安装 <code>wgcf</code> 或官方 WARP 客户端（仅开启 IPv4 路由出口，保留原生 IPv6 路由），即可在不影响 SSH 与网站入站的前提下，让本机获得稳定的出站 IPv4 能力。</li></ol>
+<h2>四、 哪些场景不建议买纯 IPv6 / NAT 机？</h2>
+<ul><li><b>需要直接运行标准端口的私有服务</b>：例如自建邮件服务器（SMTP 25 端口几乎不可能在 NAT 上开放）、或需要固定独立 IPv4 白名单对接第三方支付/企业接口的业务。</li><li><b>本地网络尚未支持 IPv6 的开发者</b>：如果你的日常办公宽带没有分配 IPv6 地址，SSH 直连纯 IPv6 VPS 会非常麻烦，只能通过商家控制台 VNC 或经过一台双栈跳板机中转。</li><li><b>主力生产数据库</b>：对于需要高稳定性和复杂内网组网的生产项目，依然建议选择预算在<a href="article-under-15-usd-annual-vps-selection.html">15 美元以内年付精选指南</a>中的标准独立双栈 KVM 机型。</li></ul><div style="margin-top:24px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:13px;"><div><a href="article-low-cost-vps-backup-and-migration-sop.html">&larr; 年付特价 VPS 运维实战：零成本异地加密备份与 15 分钟快速迁移 SOP</a></div><div><a href="articles.html">返回专栏列表</a> · <a href="./">查看实时促销雷达</a></div><div></div></div>
+  </article>
+  <footer>
+    <div><a href="./">实时促销雷达</a> · <a href="articles.html">行情专栏</a> · <a href="about.html">关于本站</a> · <a href="faq.html">选购 FAQ</a> · <a href="guide-routes.html">优化线路指南</a> · <a href="guide-benchmark.html">验收与测速</a> · <a href="privacy.html">隐私政策</a></div>
+    <div>© 2026 share600.de5.net · 独立 VPS 优惠监测与信息整理</div>
+  </footer>
+</div>
+</body>
+</html>
