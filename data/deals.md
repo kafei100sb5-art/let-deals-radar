@@ -1,13 +1,15 @@
 | 来源 | 厂商 | 活动性质 | 力度 | 配置/CPU | 旗舰价 | 状态 | 置信度 |
 |---|---|---|---|---|---|---|---|
-| LET | racknerd.com | 黑五 | 循环/永久 · double bandwidth | 6C/16G/512GNVMe / Ryzen 7 250 | $9.49/年 | 待确认 | 1.00 |
-| LET | Black Friday | 黑五 | 最高 60% off · 码 BF2026/CLICK/DURING | 6G/100GNVMe SSD | — | 售罄 | 0.50 |
+| LET | DartNode Black Friday 2026 | 黑五 | 循环/永久 | 4C/32G/4096GSSD / Ryzen 9 9950X, Xeon E5-2650 | $2/年 | 待确认 | 1.00 |
 | LET | Gullo's Hosting | 周年庆 | 循环/永久 · 最高 40% off · 码 LET10OFF/LET20OFF/LET40OFF | 1C/32G/360GSSD | $1/年 | 在售 | 0.83 |
+| LET | racknerd.com | 黑五 | 循环/永久 · double bandwidth | 6C/16G/512GNVMe / Ryzen 7 250 | $9.49/年 | 待确认 | 1.00 |
+| LET | namecrane.com | 黑五 | 循环/永久 | — | $10/年 | 待确认 | 0.33 |
+| LET | BLACK FRIDAY | 黑五 | 循环/永久 · double bandwidth | Ryzen 9 9950X | $8/年 | 售罄 | 0.50 |
+| LET | NolimitHost Black Friday Giveaway | 黑五 | 最高 26% off · 码 BF2026 | 4C/12G/120GNVMe | €8.13/季 | 待确认 | 0.83 |
+| LET | Black Friday | 黑五 | 最高 60% off · 码 BF2026/CLICK/DURING | 6G/100GNVMe SSD | — | 售罄 | 0.50 |
 | LET | Clouvider BF/CM | 黑五 | 循环/永久 · 最高 50% off · 码 PER/VPS50BF26 | 2C/4G/80GNVMe / EPYC 194, EPYC 4344P | £33.26/年 | 售罄 | 1.00 |
 | LET | DediRock | 黑五 | 循环/永久 · 最高 15% off · double bandwidth · 码 BF2026/FIND/LETTER | 2C/128G/4096GNVMe / Ryzen 9 5950X, Ryzen 9 7950X | $12.88/年 | 待确认 | 1.00 |
-| LET | DartNode Black Friday 2026 | 黑五 | 循环/永久 | 4C/32G/4096GSSD / Ryzen 9 9950X, Xeon E5-2650 | $2/年 | 待确认 | 1.00 |
 | LET | Meet Arct Cloud | 常规帖 | 循环/永久 · 最高 10% off | 2C/4G/40GNVMe | $3.89/月 | 待确认(较旧) | 0.83 |
-| LET | namecrane.com | 黑五 | 循环/永久 | — | $10/年 | 待确认 | 0.33 |
 | LET | purevoltage.com | 黑五 | double bandwidth+free upgrade | 36C/128G/1024GNVMe / EPYC 7742, RYZEN 9 9950X | $75/年 | 待确认 | 1.00 |
 | LET | Pre-BF Frankfurt EPYC KVM | 常规帖 | 循环/永久 | 6C/10G/200G / EPYC 7443 | €58.8/年 | 售罄 | 1.00 |
 | LET | DartNode | 黑五 | 循环/永久 · 最高 30% off · 12 months free · 码 GOOD | 1C/32G/1024GNVMe / Xeon E5-2650 | $399/年 | 待确认(较旧) | 1.00 |
@@ -25,8 +27,6 @@
 | LET | NaranjaTech Black Friday 2026 | 黑五 | 循环/永久 | Ryzen 9 5950X, Ryzen 9 7950X | €12/年 | 疑似售罄 | 0.50 |
 | LET | HOSTODO BLACK FRIDAY | 黑五 | — | 8C/16G/320GNVMe | — | 在售 | 0.50 |
 | LET | hostnamaste.com | 黑五 | — | 1G | $5/年 | 待确认 | 0.33 |
-| LET | NolimitHost Black Friday Giveaway | 黑五 | 最高 26% off · 码 BF2026 | 4C/12G/120GNVMe | €8.13/季 | 待确认 | 0.83 |
-| LET | BLACK FRIDAY | 黑五 | 循环/永久 · double bandwidth | Ryzen 9 9950X | $8/年 | 售罄 | 0.50 |
 | LET | servury.com | 黑五 | 循环/永久 · 最高 30% off · 码 BFLET30 | 2C/50GNVMe | $4.99/月 | 待确认 | 0.67 |
 | LET | servarica.com | 黑五 | 循环/永久 · 最高 20% off · 码 BF2026 | 8C/64G/16384GHDD / EPYC 7452, EPYC 7532 | $1.144/年 | 待确认 | 1.00 |
 | LET | LiveTerminal.ai | 黑五 | 12 months free · 码 BUILD | 4C/8G/10GNVMe / Ryzen 9 7950X3D | $9.99/月 | 待确认 | 1.00 |
