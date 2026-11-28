@@ -173,6 +173,8 @@ jobs:
     steps:
       - name: Checkout latest
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload Pages artifact
